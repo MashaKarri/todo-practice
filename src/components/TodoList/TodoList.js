@@ -1,3 +1,5 @@
+import { Timer } from "../Timer/Timer.js";
+
 import { List, Item, Text, DeleteButton } from "./TodoList.styled.js";
 
 const ToDoList = ({ todos, onDelete, onToggle }) => {
@@ -11,7 +13,11 @@ const ToDoList = ({ todos, onDelete, onToggle }) => {
               checked={item.completed}
               onChange={() => onToggle(item.id)}
             />
+
             <Text completed={item.completed}>{item.text}</Text>
+
+            <Timer isRunning={!item.completed} createdAt={item.createdAt} />
+
             <DeleteButton onClick={() => onDelete(item.id)}>
               &#10007;
             </DeleteButton>

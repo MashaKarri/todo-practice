@@ -13,9 +13,25 @@ import { Container, Title } from "./App.styled.js";
 
 class App extends Component {
   state = {
-    todos: data,
+    todos: [],
     filter: "",
   };
+
+  componentDidMount() {
+    const savedTodos = localStorage.getItem("todos");
+
+    if (savedTodos) {
+      this.setState({ todos: JSON.parse(savedTodos) });
+    } else {
+      this.setState({ todos: data });
+    }
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.todos !== this.state.todos) {
+      localStorage.setItem("todos", JSON.stringify(this.state.todos));
+    }
+  }
 
   addTodo = (text) => {
     const trimmedText = text.trim();
@@ -26,6 +42,7 @@ class App extends Component {
       id: Date.now().toString(),
       text: trimmedText,
       completed: false,
+      createdAt: Date.now(),
     };
 
     this.setState((prevTodos) => ({
